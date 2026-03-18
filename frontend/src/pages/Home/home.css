@@ -1,0 +1,14 @@
+/* .home{
+left: 0;
+right: 0;
+min-height:100vh;
+min-width: 100%;
+/* background:#ffffff; 
+padding-left: 0%;
+} */
+
+
+.home {
+  height: 100vh;
+  overflow-y: scroll;
+}

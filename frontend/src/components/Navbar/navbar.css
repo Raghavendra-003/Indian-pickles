@@ -1,0 +1,138 @@
+/* main navbar */
+.navbar {
+  position: fixed;       /* keep it fixed at top */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: all 0.4s ease;
+  background-color: transparent;
+}
+
+/* inner container */
+.navbar-container {
+  height: 70px;
+  width: 100%;
+  margin: auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* when scrolled */
+.navbar-scrolled {
+  background: rgba(48, 2, 92, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 12px 0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* logo */
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo-image {
+  height: 60px;
+  border-radius: 50%;
+}
+
+.logo-text {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ffd700;
+  letter-spacing: 2px;
+}
+
+.logo-text.small {
+  font-size: 20px;
+}
+
+.logo-text span {
+  font-weight: 400;
+}
+
+/* nav links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav-link {
+  text-decoration: none;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #ffffffcc;
+  text-transform: uppercase;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #ffd700;
+}
+
+/* cart button */
+.cart-btn {
+  background: #ffd700;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* mobile */
+.mobile-icons {
+  display: none;
+  align-items: center;
+  gap: 10px;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  background: rgba(48,2,92,0.98);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.mobile-link {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.mobile-link.active {
+  color: #ffd700;
+}
+
+.mobile-cart span {
+  font-size: 12px;
+}
+
+/* responsive */
+@media(max-width:768px) {
+  .nav-links {
+    display: none;
+  }
+  .mobile-icons {
+    display: flex;
+  }
+}

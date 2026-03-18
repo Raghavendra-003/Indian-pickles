@@ -1,0 +1,104 @@
+.about-section {
+  padding: 60px 0;
+  background: linear-gradient(180deg, #fff7ec, #fdf3e6);
+}
+
+.about-container {
+  width: 90%;
+  margin: auto;
+}
+
+.about-content {
+  max-width: 750px;
+  margin: auto;
+  text-align: center;
+}
+
+/* Tag */
+
+.about-tag {
+  font-size: 20px;
+  font-style: italic;
+  letter-spacing: 2px;
+  color: #b98b2e;
+}
+
+/* Title */
+
+.about-title {
+  font-size: 38px;
+  font-weight: 700;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  color: #222;
+}
+
+.highlight {
+  color: #d4af37;
+}
+
+/* Divider */
+
+.divider {
+  width: 120px;
+  height: 2px;
+  background: #d4af37;
+  margin: 20px auto;
+}
+
+/* Text */
+
+.about-text {
+  font-size: 17px;
+  line-height: 1.8;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+/* -------- RESPONSIVE -------- */
+
+/* Tablet */
+
+@media (max-width: 1024px) {
+
+  .about-title {
+    font-size: 32px;
+  }
+
+  .about-text {
+    font-size: 16px;
+  }
+
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+  .about-title {
+    font-size: 26px;
+  }
+
+  .about-text {
+    font-size: 15px;
+  }
+
+  .about-section {
+    padding: 40px 0;
+  }
+
+}
+
+/* Small Mobile */
+
+@media (max-width: 480px) {
+
+  .about-title {
+    font-size: 22px;
+  }
+
+  .about-tag {
+    font-size: 18px;
+  }
+
+}
