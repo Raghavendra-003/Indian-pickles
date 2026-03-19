@@ -5,6 +5,11 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import App from "./App";
 
 
+window.onerror = function (message, source, lineno, colno, error) {
+  console.log("GLOBAL ERROR:", message);
+  console.log(error);
+};
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <App />
