@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import Navbar from "../../components/Navbar/navbar";
 import Footer from "../../components/Footer/footer";
 import { CartContext } from "../../context/CartContext";
-import "./Product.css";
+import "./product.css";
 
 /* Product Images */
 import productChicken from "../../assets/product-chicken.jpg";
