@@ -11,7 +11,12 @@ const app = express();
 /* CORS */
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : [
+      "http://localhost:5000",
+      "http://localhost:5173",
+      "https://indian-pickles.vercel.app/"],
+
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
