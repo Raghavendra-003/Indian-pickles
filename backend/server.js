@@ -8,32 +8,24 @@ dotenv.config();
 
 const app = express();
 
-/* ================= CORS ================= */
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN
-      ? process.env.CORS_ORIGIN.split(",")
-      : ["http://localhost:5173"], // keep only frontend port
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
+/* CORS */
+app.use(cors());
 
-/* ================= Middleware ================= */
+/*  Middleware  */
 app.use(express.json());
 
-/* ================= Routes ================= */
+/*  Routes  */
 app.get("/", (req, res) => {
   res.send("Backend Running 🚀");
 });
 
 app.use("/api/orders", orderRoutes);
 
-/* ================= MongoDB ================= */
+/*  MongoDB  */
 
 const startServer = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(process.env.MONGO_URI); 
     console.log("MongoDB Connected ✅");
   } catch (error) {
     console.log("MongoDB Connection Failed ❌", error);
