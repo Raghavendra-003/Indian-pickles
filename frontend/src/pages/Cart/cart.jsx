@@ -103,7 +103,7 @@ const Cart = () => {
             </h1>
           </Link>
 
-          <div className="cart-badge">Cart ({cartCount})</div>
+          <div className="cart-badge">Cart  ({cartCount})</div>
         </div>
 
         {/* Empty Cart */}

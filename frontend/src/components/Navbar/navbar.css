@@ -142,6 +142,13 @@
 
 /* responsive */
 @media(max-width:768px) {
+
+  .small{
+    font-size:20px;
+  }
+  .logo-text{
+    font-size: 20px;
+  }
   .nav-links {
     display: none;
   }
