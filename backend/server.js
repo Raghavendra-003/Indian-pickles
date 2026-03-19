@@ -30,21 +30,20 @@ app.get("/", (req, res) => {
 app.use("/api/orders", orderRoutes);
 
 /* ================= MongoDB ================= */
+
 const startServer = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URL);
-
+    await mongoose.connect(process.env.MONGO_URI);
     console.log("MongoDB Connected ✅");
-
-    const PORT = process.env.PORT || 5000;
-
-    app.listen(process.env.PORT, () => {
-      console.log(`Server running on port ${PORT} 🚀`);
-    });
   } catch (error) {
-    console.error("MongoDB Connection Failed ❌", error);
-    process.exit(1); // exit if DB fails
+    console.log("MongoDB Connection Failed ❌", error);
   }
+
+  const PORT = process.env.PORT || 5000;
+
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 };
 
 startServer();
