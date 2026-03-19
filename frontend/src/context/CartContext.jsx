@@ -14,18 +14,18 @@ export const CartProvider = ({ children }) => {
   }
 });
 
-  // useEffect(() => {
-  //   try{
-  //      const savedCart = localStorage.getItem("cart");
+  useEffect(() => {
+    try{
+       const savedCart = localStorage.getItem("cart");
 
-  //   if (savedCart) {
-  //     setCartItems(JSON.parse(savedCart));
-  //   }
-  //   } catch (errors){
-  //     console.error("Error parsing cart:", error);
-  //   setCartItems([]);
-  //   }
-  //   },[]);
+    if (savedCart) {
+      setCartItems(JSON.parse(savedCart));
+    }
+    } catch (error){
+      console.error("Error parsing cart:", error);
+    setCartItems([]);
+    }
+    },[]);
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cartItems));

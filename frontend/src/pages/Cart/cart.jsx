@@ -22,10 +22,10 @@ const Cart = () => {
     clearCart,
   } = context;
 
-  const cartCount = cartItems.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
+  const cartCount = (cartItems || []).reduce(
+  (total, item) => total + item.quantity,
+  0
+);
 
   const adminNumber = "917095543843";
 
