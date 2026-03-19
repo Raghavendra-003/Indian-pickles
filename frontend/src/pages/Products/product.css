@@ -228,9 +228,11 @@ cursor:pointer;
 /* Mobile */
 
 @media (max-width:768px){
-
+.products-page{
+  padding-top:100px;
+}
 .products-title{
-font-size:28px;
+font-size:25px;
 }
 
 .products-grid{

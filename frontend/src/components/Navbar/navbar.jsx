@@ -29,13 +29,15 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      const scrollTop = window.scrollY || document.documentElement.scrollTop
+    setIsScrolled(scrollTop > 10)
     }
+    handleScroll()
 
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true} )
 
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  }, [location.pathname])
 
   useEffect(() => {
 
@@ -68,13 +70,7 @@ const Navbar = () => {
 
         <Link to="/" className="logo-container">
 
-          {!isScrolled &&
-            <img
-              src={kamalaLogo}
-              alt="Kamala Pickle Logo"
-              className="logo-image"
-            />
-          }
+          <img src={kamalaLogo} alt="Kamala Pickle Logo" className={`logo-image ${isScrolled ? "small" : ""}`} />
 
           <span className={`logo-text ${isScrolled ? "small" : ""}`}>
             KAMALA <span>PICKLE</span>
@@ -99,7 +95,7 @@ const Navbar = () => {
             </Link>
           ))}
 
-          <Link to="/cart">
+          <Link to="/cart" className="cart-link">
             <button className="cart-btn">
               <FiShoppingCart/>
               Cart ({cartCount})

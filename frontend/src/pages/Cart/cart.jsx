@@ -4,7 +4,6 @@ import Footer from "../../components/Footer/footer";
 import { CartContext } from "../../context/CartContext";
 import "./cart.css";
 
-
 const Cart = () => {
   const [whatsAppMessage, setWhatsAppMessage] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
@@ -15,7 +14,13 @@ const Cart = () => {
 
   if (!context) return null;
 
-  const { cartItems, increaseQty, decreaseQty, getGrandTotal, clearCart } = context;
+  const {
+    cartItems,
+    increaseQty,
+    decreaseQty,
+    getGrandTotal,
+    clearCart,
+  } = context;
 
   const cartCount = cartItems.reduce(
     (total, item) => total + item.quantity,
@@ -25,23 +30,32 @@ const Cart = () => {
   const adminNumber = "917095543843";
 
   const handlePlaceOrder = async () => {
-    console.log("clicked")
+    console.log("BUTTON CLICKED ✅");
+
     try {
+      const formattedItems = cartItems.map((item) => ({
+        productId: item.id,
+        name: item.name,
+        weight: item.weight,
+        price: item.price,
+        quantity: item.quantity,
+      }));
+
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/orders/create-order`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({
-            items: cartItems,
+            items: formattedItems,
             totalAmount: getGrandTotal(),
           }),
         }
-         
       );
-      if (!response.ok) {
-      throw new Error("Server not responding");
-    }
+
+      if (!response.ok) throw new Error("Server error");
 
       const data = await response.json();
 
@@ -54,9 +68,11 @@ const Cart = () => {
         message += `Date: ${orderDate}\n\n`;
         message += `Order Details:\n`;
 
-        cartItems.forEach((item, index) => {
-          message += `${index + 1}. ${item.name}\n`;
-          message += `₹${item.price} x ${item.quantity} = ₹${item.price * item.quantity}\n`;
+        formattedItems.forEach((item, index) => {
+          message += `${index + 1}. ${item.name} (${item.weight})\n`;
+          message += `₹${item.price} x ${item.quantity} = ₹${
+            item.price * item.quantity
+          }\n`;
         });
 
         message += `\nTotal Amount: ₹${getGrandTotal()}\n\n`;
@@ -64,13 +80,15 @@ const Cart = () => {
 
         setWhatsAppMessage(message);
         setCurrentOrderId(orderId);
+
+        // 🔥 SHOW MODAL
         setShowSuccess(true);
+      } else {
+        alert("Order failed!");
       }
-      else {
-      alert("Order failed!");
-    }
     } catch (error) {
-      console.error("Order failed", error);
+      console.error("ORDER ERROR ❌:", error);
+      alert("Something went wrong!");
     }
   };
 
@@ -79,22 +97,27 @@ const Cart = () => {
       <div className="cart-container">
         {/* Header */}
         <div className="cart-header">
-          <Link to="/">
+          <Link to="/" className="logo-link">
             <h1 className="logo">
               KAMALA <span>PICKLE</span>
             </h1>
           </Link>
 
-          <div className="cart-badge">
-            Cart ({cartCount})
-          </div>
+          <div className="cart-badge">Cart ({cartCount})</div>
         </div>
 
         {/* Empty Cart */}
         {cartItems.length === 0 && (
           <div className="empty-cart">
-            <p style={{ fontSize:28 , fontWeight:"Bold" }}>Your cart is empty.</p>
-              <button className="button" onClick={() => navigate("/products")}>Add more</button>
+            <p style={{ fontSize: 28, fontWeight: "bold" }}>
+              Your cart is empty.
+            </p>
+            <button
+              className="button"
+              onClick={() => navigate("/products")}
+            >
+              Add more
+            </button>
           </div>
         )}
 
@@ -115,9 +138,13 @@ const Cart = () => {
             </div>
 
             <div className="qty-controls">
-              <button onClick={() => decreaseQty(item.id, item.weight)}>-</button>
+              <button onClick={() => decreaseQty(item.id, item.weight)}>
+                -
+              </button>
               <span>{item.quantity}</span>
-              <button onClick={() => increaseQty(item.id, item.weight)}>+</button>
+              <button onClick={() => increaseQty(item.id, item.weight)}>
+                +
+              </button>
             </div>
           </div>
         ))}
@@ -134,21 +161,34 @@ const Cart = () => {
                 <button className="button">Back</button>
               </Link>
 
-              <button className="place-order" onClick={handlePlaceOrder}>
+              <button
+                className="place-order"
+                onClick={handlePlaceOrder}
+              >
                 Place Order
               </button>
-              
             </div>
           </>
-
-
         )}
       </div>
 
-      {/* Success Modal */}
+      {/* ✅ SUCCESS MODAL */}
       {showSuccess && (
-        <div className="modal">
-          <div className="modal-content">
+        <div
+          className="modal"
+          onClick={() => setShowSuccess(false)}
+        >
+          <div
+            className="modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowSuccess(false)}
+              className="close-btn"
+            >
+              ❌
+            </button>
+
             <div className="emoji">🎉🎊</div>
 
             <h2>Order Placed Successfully!</h2>
@@ -160,15 +200,16 @@ const Cart = () => {
             <button
               className="btn whatsapp"
               onClick={() => {
-                setShowSuccess(false);
-                clearCart();
-
-                const encodedMessage = encodeURIComponent(whatsAppMessage);
+                const encodedMessage =
+                  encodeURIComponent(whatsAppMessage);
 
                 window.open(
                   `https://wa.me/${adminNumber}?text=${encodedMessage}`,
                   "_blank"
                 );
+
+                setShowSuccess(false);
+                clearCart();
               }}
             >
               Continue to WhatsApp

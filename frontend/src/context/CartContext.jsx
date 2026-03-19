@@ -5,15 +5,27 @@ export const CartContext = createContext();
 /* PROVIDER */
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
-
-  useEffect(() => {
+  const [cartItems, setCartItems] = useState(() => {
+  try {
     const savedCart = localStorage.getItem("cart");
+    return savedCart ? JSON.parse(savedCart) : [];
+  } catch {
+    return [];
+  }
+});
 
-    if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
-    }
-  }, []);
+  // useEffect(() => {
+  //   try{
+  //      const savedCart = localStorage.getItem("cart");
+
+  //   if (savedCart) {
+  //     setCartItems(JSON.parse(savedCart));
+  //   }
+  //   } catch (errors){
+  //     console.error("Error parsing cart:", error);
+  //   setCartItems([]);
+  //   }
+  //   },[]);
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cartItems));
