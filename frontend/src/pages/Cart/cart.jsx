@@ -54,9 +54,12 @@ const Cart = () => {
         }),
       });
 
-      if (!response.ok) throw new Error("Server error");
-
       const data = await response.json();
+
+      if (!response.ok) {
+        console.error("Backend Error:", data);
+        throw new Error(data.message || "Server error");
+      }
 
       if (data.success) {
         const orderId = data.orderId;

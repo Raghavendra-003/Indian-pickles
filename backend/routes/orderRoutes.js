@@ -60,6 +60,7 @@ router.get("/:orderId", async (req, res) => {
 ===================================================== */
 router.post("/create-order", async (req, res) => {
   try {
+     console.log("BODY:", req.body);
     const { items, totalAmount } = req.body;
 
     // Basic validation
