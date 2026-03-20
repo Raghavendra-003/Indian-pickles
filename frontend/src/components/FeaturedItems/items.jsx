@@ -24,20 +24,8 @@ const products = [
       { weight: "1kg", price: 1400 },
     ],
   },
-  {
+   {
     id: "2",
-    name: "Mutton Pickle (Boneless)",
-    image: productMutton,
-    tag: "Tasty",
-    available: true,
-    variants: [
-      { weight: "250g", price: 570 },
-      { weight: "500g", price: 1130 },
-      { weight: "1kg", price: 2160 },
-    ],
-  },
-  {
-    id: "3",
     name: "Karela Pickle",
     image: productKakarakaya,
     tag: "Spicy",
@@ -49,7 +37,20 @@ const products = [
     ],
   },
   {
-    id: "4",
+    id: "3",
+    name: "Mutton Pickle (Boneless)",
+    image: productMutton,
+    tag: "Tasty",
+    available: true,
+    variants: [
+      { weight: "250g", price: 570 },
+      { weight: "500g", price: 1130 },
+      { weight: "1kg", price: 2160 },
+    ],
+  },
+ 
+  {
+    id: "6",
     name: "Lemon Pickle",
     image: productLemon,
     tag: "New",
