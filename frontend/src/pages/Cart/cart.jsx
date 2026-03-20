@@ -28,6 +28,7 @@ const Cart = () => {
 );
 
   const adminNumber = "917095543843";
+  const API_URL = import.meta.env.VITE_API_URL || "https://indian-pickles.onrender.com";
 
   const handlePlaceOrder = async () => {
     console.log("BUTTON CLICKED ✅");
@@ -41,19 +42,17 @@ const Cart = () => {
         quantity: item.quantity,
       }));
 
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/orders/create-order`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            items: formattedItems,
-            totalAmount: getGrandTotal(),
-          }),
-        }
-      );
+      console.log("API URL:", `${API_URL}/api/orders/create-order`);
+      const response = await fetch(`${API_URL}/api/orders/create-order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items: formattedItems,
+          totalAmount: getGrandTotal(),
+        }),
+      });
 
       if (!response.ok) throw new Error("Server error");
 

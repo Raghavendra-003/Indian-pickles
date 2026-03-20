@@ -9,13 +9,20 @@ dotenv.config();
 const app = express();
 
 /* CORS */
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : [
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN
+      .split(',')
+      .map((origin) => origin.trim())
+      .filter(Boolean)
+  : [
       "http://localhost:5000",
       "http://localhost:5173",
-      "https://indian-pickles.vercel.app/"],
+      "https://indian-pickles.vercel.app",
+    ];
 
+app.use(
+  cors({
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
