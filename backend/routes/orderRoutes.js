@@ -61,20 +61,41 @@ router.get("/:orderId", async (req, res) => {
 router.post("/create-order", async (req, res) => {
   try {
      console.log("BODY:", req.body);
-    const { items, totalAmount } = req.body;
-
+    const { items, totalAmount } = req.body || {};
     // Basic validation
-    if (!items || items.length === 0) {
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      console.error("Create Order Validation: items missing or invalid", items);
       return res.status(400).json({
         success: false,
-        message: "Order items are required",
+        message: "Order items are required and must be a non-empty array",
       });
     }
 
-    if (!totalAmount || totalAmount <= 0) {
+    if (typeof totalAmount !== "number" || isNaN(totalAmount) || totalAmount <= 0) {
+      console.error("Create Order Validation: invalid totalAmount", totalAmount);
       return res.status(400).json({
         success: false,
         message: "Valid total amount is required",
+      });
+    }
+
+    // Validate item fields and compute sum
+    const computedSum = items.reduce((sum, it, idx) => {
+      const price = Number(it.price) || 0;
+      const qty = Number(it.quantity) || 0;
+      if (!it.productId || !it.name || price <= 0 || qty <= 0) {
+        console.error(`Create Order Validation: invalid item at index ${idx}:`, it);
+      }
+      return sum + price * qty;
+    }, 0);
+
+    // Allow small rounding differences (paise) but reject large mismatches
+    if (Math.abs(computedSum - totalAmount) > 1) {
+      console.error("Create Order Validation: total mismatch", { computedSum, totalAmount });
+      return res.status(400).json({
+        success: false,
+        message: "Total amount does not match sum of items",
+        computedSum,
       });
     }
 

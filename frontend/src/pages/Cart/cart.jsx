@@ -8,6 +8,7 @@ const Cart = () => {
   const [whatsAppMessage, setWhatsAppMessage] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
   const [currentOrderId, setCurrentOrderId] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const context = useContext(CartContext);
   const navigate = useNavigate();
@@ -28,10 +29,11 @@ const Cart = () => {
 );
 
   const adminNumber = "917095543843";
-  const API_URL = import.meta.env.VITE_API_URL || "https://indian-pickles.onrender.com";
+  const API_URL = (import.meta.env.VITE_API_URL || "https://indian-pickles.onrender.com").replace(/\/+$/, "");
 
   const handlePlaceOrder = async () => {
-    console.log("BUTTON CLICKED ✅");
+    if (isSubmitting) return;
+    setIsSubmitting(true);
 
     try {
       const formattedItems = cartItems.map((item) => ({
@@ -42,29 +44,40 @@ const Cart = () => {
         quantity: item.quantity,
       }));
 
-      console.log("API URL:", `${API_URL}/api/orders/create-order`);
-      const response = await fetch(`${API_URL}/api/orders/create-order`, {
+      const url = `${API_URL}/api/orders/create-order`;
+      const requestBody = {
+        items: formattedItems,
+        totalAmount: getGrandTotal(),
+      };
+
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          items: formattedItems,
-          totalAmount: getGrandTotal(),
-        }),
+        body: JSON.stringify(requestBody),
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      let data;
+
+      try {
+        data = responseText ? JSON.parse(responseText) : {};
+      } catch (err) {
+        data = {};
+      }
 
       if (!response.ok) {
-        console.error("Backend Error:", data);
-        throw new Error(data.message || "Server error");
+        if (response.status >= 500) {
+          throw new Error("The order service is starting or temporarily unavailable. Please wait a minute and try again.");
+        }
+        throw new Error(data.message || `Could not place order (server error ${response.status}).`);
       }
 
       if (data.success) {
         const orderId = data.orderId;
         const orderDate = new Date().toLocaleString();
-
+        console.log(orderId, orderDate, formattedItems);
         let message = `Hello Kamala Pickle,\n\n`;
         message += `My Order ID: ${orderId}\n\n`;
         message += `Date: ${orderDate}\n\n`;
@@ -86,11 +99,16 @@ const Cart = () => {
         // 🔥 SHOW MODAL
         setShowSuccess(true);
       } else {
-        alert("Order failed!");
+        throw new Error(data.message || "The server did not confirm the order. Please try again.");
       }
     } catch (error) {
-      console.error("ORDER ERROR ❌:", error);
-      alert("Something went wrong!");
+      const message = error instanceof TypeError
+        ? "Could not reach the order service. It may be starting; please wait a minute and try again."
+        : error.message || "Could not place your order. Please try again.";
+      console.error("Order submission failed:", error);
+      alert(message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -166,8 +184,9 @@ const Cart = () => {
               <button
                 className="place-order"
                 onClick={handlePlaceOrder}
+                disabled={isSubmitting}
               >
-                Place Order
+                {isSubmitting ? "Placing Order..." : "Place Order"}
               </button>
             </div>
           </>
