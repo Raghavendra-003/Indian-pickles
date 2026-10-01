@@ -53,7 +53,9 @@ const startServer = async () => {
       throw new Error("MONGO_URL is not set");
     }
 
-    await mongoose.connect(process.env.MONGO_URL);
+    await mongoose.connect(process.env.MONGO_URL, {
+      dbName: process.env.MONGO_DB_NAME || "pickleDB",
+    });
     console.log("MongoDB Connected");
 
     app.listen(PORT, () => {
